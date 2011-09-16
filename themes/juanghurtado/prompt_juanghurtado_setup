@@ -1,0 +1,46 @@
+# ------------------------------------------------------------------------------
+#          FILE:  prompt_juanghurtado_setup
+#   DESCRIPTION:  oh-my-zsh theme file.
+#        AUTHOR:  Juan G. Hurtado <juan.g.hurtado@gmail.com>
+#       VERSION:  0.1
+#    SCREENSHOT:  
+# ------------------------------------------------------------------------------
+function prompt_juanghurtado_precmd () {
+  setopt noxtrace noksharrays localoptions
+
+  if (( $+functions[git-info] )); then
+    git-info
+  fi
+}
+
+function prompt_juanghurtado_setup() {
+  setopt noxtrace noksharrays localoptions
+  prompt_opts=(cr subst percent)
+
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd prompt_juanghurtado_precmd
+
+  zstyle ':prompt:' completion  '%B%F{red}...%f%b'
+  zstyle ':git-info:' action    ' %F{white}(%s)%f'
+  zstyle ':git-info:' ahead     ' %F{red}ahead%f'
+  zstyle ':git-info:' behind    ' %F{red}behind%f%'
+  zstyle ':git-info:' branch    '%F{green}%b%f'
+  zstyle ':git-info:' dirty     ' %F{red}dirty%f'
+  zstyle ':git-info:' stashed   ' %F{yellow}stashed%f'
+  zstyle ':git-info:' unmerged  ' %F{red}≈%f'
+  zstyle ':git-info:' prompt    ' %F{black}➜%f %b%s%S%D%U'
+  
+  # Checks vi-mode: [i] for insert mode, [n] for normal mode
+  local VIMODE='[i]'
+  function zle-keymap-select {
+    VIMODE="${${KEYMAP/vicmd/[n]}/(main|viins)/[i]}"
+    zle reset-prompt
+  }
+  zle -N zle-keymap-select
+  
+  PROMPT='
+%B%F{yellow}%~%f%b${git_prompt_info}
+%F{blue}${VIMODE}›%f '
+}
+
+prompt_juanghurtado_setup "$@"
