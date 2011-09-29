@@ -20,20 +20,20 @@ function prompt_juanghurtado_setup() {
   autoload -Uz add-zsh-hook
   add-zsh-hook precmd prompt_juanghurtado_precmd
 
-  zstyle ':prompt:' completion  '%B%F{red}...%f%b'
+  zstyle ':prompt:' completion  '%B%F{black}...%f%b'
   zstyle ':git-info:' action    ' %F{white}(%s)%f'
   zstyle ':git-info:' ahead     ' %F{red}ahead%f'
   zstyle ':git-info:' behind    ' %F{red}behind%f%'
   zstyle ':git-info:' branch    '%F{green}%b%f'
   zstyle ':git-info:' dirty     ' %F{red}dirty%f'
   zstyle ':git-info:' stashed   ' %F{yellow}stashed%f'
-  zstyle ':git-info:' unmerged  ' %F{red}≈%f'
-  zstyle ':git-info:' prompt    ' %F{black}➜%f %b%s%S%D%U'
+  zstyle ':git-info:' unmerged  ' %F{red}unmerged%f'
+  zstyle ':git-info:' prompt    ' %F{black}➜%f %b%s%S%D%U%A%B'
   
-  # Checks vi-mode: [i] for insert mode, [n] for normal mode
-  local VIMODE='[i]'
+  # Checks vi-mode: ' ' (simple space) for insert mode, '›' for normal mode
+  VIMODE=' '
   function zle-keymap-select {
-    VIMODE="${${KEYMAP/vicmd/[n]}/(main|viins)/[i]}"
+    VIMODE="${${KEYMAP/vicmd/›}/(main|viins)/ }"
     zle reset-prompt
   }
   zle -N zle-keymap-select
